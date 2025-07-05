@@ -6,8 +6,13 @@ from utils.line import push_to_line
 GITHUB_REPO = "apache/airflow"
 
 def get_latest_issue(repo):
+    headers = {
+        "Authorization": f"Bearer {os.getenv('GH_TOKEN')}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+    }
     url = f"https://api.github.com/repos/{repo}/issues"
-    resp = requests.get(url, params={"per_page": 1, "state": "open"})
+    resp = requests.get(url, params={"per_page": 1, "state": "open"}, headers=headers)
     resp.raise_for_status()
     issues = resp.json()
 
@@ -32,7 +37,8 @@ if __name__ == "__main__":
         delta = now - created_at
 
         if delta < timedelta(minutes=5):
+            print(delta)
             msg = f"🚨 New Airflow Issue #{latest['number']}:\n{latest['title']}\n{latest['url']}"
-            push_to_line(msg)
+            # push_to_line(msg)
         else:
             print("✅ No issues created in the last 5 minutes.")

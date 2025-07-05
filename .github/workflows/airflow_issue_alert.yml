@@ -24,3 +24,4 @@ jobs:
         env:
           LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
           LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
